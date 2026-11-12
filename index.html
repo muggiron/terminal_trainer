@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en" data-theme="dark" data-os="mac">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Terminal Trainer</title>
+  <meta name="description" content="Practise macOS and Linux terminal commands in a safe, simulated terminal.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231e1f22'/%3E%3Cpath d='M8 10l6 6-6 6' fill='none' stroke='%2358c7bb' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M16 23h8' stroke='%23e6e6e6' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#terminal">Skip to the terminal</a>
+
+  <header class="bar">
+    <div class="brand">
+      <svg viewBox="0 0 32 32" width="26" height="26" aria-hidden="true"><rect width="32" height="32" rx="7" fill="currentColor" opacity=".12"/><path d="M8 10l6 6-6 6" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 23h8" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+      <h1>Terminal Trainer</h1>
+    </div>
+
+    <nav class="seg modes" aria-label="Mode">
+      <button type="button" data-mode="learn" aria-pressed="true">Learn</button>
+      <button type="button" data-mode="sandbox" aria-pressed="false">Sandbox</button>
+      <button type="button" data-mode="review" aria-pressed="false">Review</button>
+    </nav>
+
+    <div class="bar-right">
+      <div class="seg os" role="group" aria-label="Operating system">
+        <button type="button" data-os="mac" aria-pressed="true">macOS</button>
+        <button type="button" data-os="linux" aria-pressed="false">Linux</button>
+      </div>
+      <button type="button" class="btn" id="btn-ref" aria-expanded="false" aria-controls="ref">Reference</button>
+      <button type="button" class="btn" id="btn-settings" aria-haspopup="dialog">Settings</button>
+    </div>
+  </header>
+
+  <main class="layout" id="layout">
+    <aside class="panel" id="panel" aria-label="Lesson" tabindex="-1"></aside>
+
+    <section class="stage" aria-label="Practice terminal">
+      <div class="task" id="task" aria-live="polite"></div>
+
+      <div class="term-window" id="terminal">
+        <div class="term-chrome" aria-hidden="true">
+          <span class="lights"><i></i><i></i><i></i></span>
+          <span class="term-title" id="term-title">Terminal</span>
+          <span class="sim-badge">Simulated</span>
+        </div>
+        <div class="term-body">
+          <div class="term-scroll" role="log" aria-label="Terminal output" tabindex="-1"></div>
+          <div class="term-full" hidden><pre aria-label="Full-screen program"></pre></div>
+          <textarea class="term-input" aria-label="Simulated terminal input. Type commands here. Press F6 to leave the terminal." autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" rows="1"></textarea>
+        </div>
+        <div class="term-assist" id="assist" hidden></div>
+        <div class="term-keys" role="group" aria-label="Extra keys for touch screens">
+          <button type="button" data-key="Tab">Tab</button>
+          <button type="button" data-key="Escape">Esc</button>
+          <button type="button" data-key="ArrowUp" aria-label="Up">↑</button>
+          <button type="button" data-key="ArrowDown" aria-label="Down">↓</button>
+          <button type="button" data-key="ArrowLeft" aria-label="Left">←</button>
+          <button type="button" data-key="ArrowRight" aria-label="Right">→</button>
+          <button type="button" data-key="C-c">Ctrl+C</button>
+          <button type="button" data-key="C-d">Ctrl+D</button>
+        </div>
+      </div>
+      <p class="stage-foot">Click the terminal and type. <kbd>Tab</kbd> completes names. <kbd>F6</kbd> or <kbd>Shift</kbd>+<kbd>Tab</kbd> moves the focus out of the terminal. This is a simulated computer: its folders and files are made up, and nothing here can touch your real ones.</p>
+    </section>
+
+    <aside class="ref" id="ref" aria-label="Reference" hidden>
+      <div class="ref-head">
+        <h2>Reference</h2>
+        <button type="button" class="btn icon" id="btn-ref-close" aria-label="Close reference">✕</button>
+      </div>
+      <div class="seg ref-tabs" role="tablist" aria-label="Reference sections">
+        <button type="button" role="tab" data-tab="commands" aria-selected="true">Commands</button>
+        <button type="button" role="tab" data-tab="syntax" aria-selected="false">Syntax</button>
+        <button type="button" role="tab" data-tab="keys" aria-selected="false">Shortcuts</button>
+        <button type="button" role="tab" data-tab="vi" aria-selected="false">vi</button>
+      </div>
+      <label class="ref-search"><span class="sr-only">Search commands</span>
+        <input type="search" id="ref-q" placeholder="Search, e.g. copy or grep" autocomplete="off">
+      </label>
+      <div class="ref-body" id="ref-body" tabindex="0"></div>
+    </aside>
+  </main>
+
+  <dialog id="settings" aria-labelledby="settings-title">
+    <form method="dialog">
+      <h2 id="settings-title">Settings</h2>
+      <fieldset>
+        <legend>Appearance</legend>
+        <div class="seg" id="theme-seg" role="group" aria-label="Theme">
+          <button type="button" data-theme-opt="system" aria-pressed="true">System</button>
+          <button type="button" data-theme-opt="light" aria-pressed="false">Light</button>
+          <button type="button" data-theme-opt="dark" aria-pressed="false">Dark</button>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Terminal text size</legend>
+        <label class="range"><span class="sr-only">Terminal text size</span>
+          <input type="range" id="font-size" min="12" max="22" step="1" value="15">
+          <output id="font-size-out">15 px</output>
+        </label>
+      </fieldset>
+      <fieldset>
+        <legend>Helpers</legend>
+        <label class="check"><input type="checkbox" id="opt-assist" checked> Show key hints under vi, nano and less</label>
+        <label class="check"><input type="checkbox" id="opt-coach" checked> Explain errors (the coach)</label>
+      </fieldset>
+      <fieldset>
+        <legend>Start over</legend>
+        <div class="row">
+          <button type="button" class="btn" id="btn-reset-sandbox">Reset sandbox files</button>
+          <button type="button" class="btn danger" id="btn-reset-progress">Reset all progress</button>
+        </div>
+        <p class="fine" id="reset-msg" role="status"></p>
+      </fieldset>
+      <div class="dialog-foot"><button class="btn primary" value="close">Done</button></div>
+    </form>
+  </dialog>
+
+  <script type="module" src="js/app.js"></script>
+  <noscript><p style="padding:2rem">Terminal Trainer needs JavaScript to run.</p></noscript>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "name": "terminal-trainer",
+  "version": "1.0.0",
+  "description": "Practise macOS and Linux terminal commands in a safe, simulated terminal.",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test \"test/*.test.js\"",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.0",
+    "eslint": "^9.39.0",
+    "globals": "^17.0.0"
+  }
+}
